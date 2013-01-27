@@ -1,0 +1,8 @@
+require "capistrano/version"
+
+# Load local recipes
+Dir["lib/recipes/*.rb"].each { |recipe| load(recipe) }
+
+load "deploy"
+load "deploy/assets"
+load "config/deploy"
