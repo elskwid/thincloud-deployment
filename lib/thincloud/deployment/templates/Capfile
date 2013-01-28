@@ -1,4 +1,5 @@
 require "capistrano/version"
+require "thincloud/capistrano"
 
 # Load local recipes
 Dir["lib/recipes/*.rb"].each { |recipe| load(recipe) }

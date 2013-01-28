@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+require "thor"
+require File.expand_path("../../lib/thincloud/deployment/version", __FILE__)
+
+module Thincloud
+  module Deployment
+    class CLI < ::Thor
+      include ::Thor::Actions
+
+      desc "version", "Show the thincloud-deployment version"
+      def version
+        say gem_version
+      end
+
+      desc "list", "List recipes included in thincloud-deployment"
+      def list
+        say "Recipes included in thincloud-deployment (v#{gem_version}):"
+        say ""
+        print_table recipes.map { |r| ["*", r] }, indent: 2
+        say ""
+      end
+
+      desc "show RECIPE", "Show the contents of a specific recipe"
+      def show(recipe)
+        path = File.expand_path("#{source_root}/#{recipe}.rb")
+        found = recipe_paths.grep(%r{#{path}}).first
+        say "Recipe `#{recipe}` not found." and return unless found
+
+        say ""
+        say "-- Recipe: #{recipe} --"
+        say ""
+        say File.read(found).strip
+        say ""
+        say "-- END OF LINE --"
+      end
+
+      private
+
+      def source_root
+        path = "../../lib/thincloud/recipes"
+        self.class.source_root File.expand_path(path, __FILE__)
+      end
+
+      def recipe_paths
+        Dir[File.expand_path("#{source_root}/*.rb", __FILE__)]
+      end
+
+      def recipes
+        recipe_paths.map { |recipe| File.basename(recipe, ".rb") }
+      end
+
+      def gem_version
+        Thincloud::Deployment::VERSION
+      end
+    end
+  end
+end
+
+Thincloud::Deployment::CLI.start

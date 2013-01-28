@@ -1,5 +1,5 @@
 require "thincloud/deployment"
-require "thincloud/deployment/deployment_generator.rb" if defined?(Rails)
+require "thincloud/deployment/deployment_generator" if defined?(Rails)
 
 module Thincloud
   module Deployment

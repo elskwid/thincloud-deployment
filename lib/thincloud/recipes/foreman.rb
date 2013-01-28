@@ -1,7 +1,6 @@
 after "deploy:create_symlink", "foreman:export"
 
 namespace :foreman do
-
   desc "Export the Procfile to Ubuntu's upstart scripts"
   task :export, roles: :app do
     run "cd #{release_path} && sudo /usr/local/rvm/bin/rvm default exec " <<
@@ -24,5 +23,5 @@ namespace :foreman do
     run "sudo /sbin/start #{application}-#{rails_env} || " <<
         "sudo /sbin/restart #{application}-#{rails_env}"
   end
-
 end
+

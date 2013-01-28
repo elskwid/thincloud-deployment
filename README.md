@@ -34,10 +34,39 @@ Or install it yourself as:
 
 This gem manages the deployment framework dependencies for you, provides a default set of `capistrano` recipes, and provides a `Thor` generator to bootstrap application deployment.
 
-To
-
 This is typically used in `Rails` applications so a rails-like folder structure is assumed when running the generator.
 
+To enable the default New Leaders conventions, run the following command:
+
+```
+$ thincloud-capify
+```
+
+If you are running this from the provided Rails generator, run:
+
+```
+$ rails g thincloud:deployment
+```
+
+This generator will do the following:
+
+* Add `Capfile` at the root of your project
+* Add `config/deploy.rb` for application-level deployment settings
+* Add `config/deploy/staging.rb` and `config/deploy/production.rb` for stage-level deployment settings.
+* Add the `lib/recipes` directory to store project specific recipes.
+* Set up `foreman`
+
+### Configuration
+
+All conventional settings are contained in the gem recipes and are loaded into the `Capistrano` configuration during startup.
+
+`thincloud-deployment` follows the `Capistrano` multistage deployment strategy. As you can see in the generator description above, we create an application `deploy.rb` as well as individual stage files (`staging.rb`, `production.rb`).
+
+Any of the tasks or settings can be overriden in these files.
+
+#### Adding stages
+
+Just add a new `Ruby` file under `config/deploy`. To add a `demo` stage you would create `config/deploy/demo.rb`.
 
 ## Contributing
 

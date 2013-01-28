@@ -1,12 +1,15 @@
 module Capistrano
   if const_defined? :Configuration
-    Configuration.instance(true).load do
-      recipes = Dir[File.expand_path("../recipes/*.rb", __FILE__)]
-      recipes.each { |recipe| load(recipe) }
+    require "capistrano/ext/multistage"
 
-      ## do other stuff here
+    set :stages, %w(staging production)
+    set :default_stage, "staging"
 
-      # inject shared_resources
-    end
+    # Load recipes into the Capistrano::Configuration instance
+    recipes = Dir[File.expand_path("../recipes/*.rb", __FILE__)]
+    recipes.each { |recipe|
+      puts ">> load #{recipe}"
+      Configuration.instance(true).load(recipe)
+    }
   end
 end
