@@ -5,7 +5,12 @@ module Thincloud
     include ::Thor::Actions
   end
 
-  GeneratorBase = defined?(Rails) ? ::Rails::Generators::Base : ThorBase
+  GeneratorBase = if defined?(Rails)
+    require "rails/generators" # Handle Rails load order explicitly
+    ::Rails::Generators::Base
+  else
+    ThorBase
+  end
 
   class DeploymentGenerator < GeneratorBase
     source_root File.expand_path("../templates", __FILE__)
